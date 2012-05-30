@@ -20,7 +20,7 @@ cdup() {
 }
 
 _cdup_complete() {
-	local cur prev path ar
+	local cur prev path ar opts
 	COMPREPLY=()
 	cur="${COMP_WORDS[COMP_CWORD]}"
 	prev="${COMP_WORDS[COMP_CWORD-1]}"
@@ -28,9 +28,12 @@ _cdup_complete() {
 	old_ifs=$IFS
 	IFS=/
 	ar=$path
-	COMPREPLY=( $(compgen -W "${ar}" ${cur}) )
+	opts=""
+	for x in $ar; do
+		opts=$opts$x" "	
+	done
 	IFS=$old_ifs
-	return 0
+	COMPREPLY=( $(compgen -W "${opts}" ${cur}) )
 }
 
 complete -F _cdup_complete cdup
